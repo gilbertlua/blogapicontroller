@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using blogapicontroller.Data;
 using blogapicontroller.DTO;
 using blogapicontroller.Models;
+using Humanizer;
 
 namespace blogapicontroller.Controllers
 {
@@ -59,7 +62,7 @@ namespace blogapicontroller.Controllers
                 AuthorId = post.AuthorId,
                 Content = post.Content,
                 Title = post.Title,
-                Slug = post.Slug,
+                Slug = post.Title.Kebaberize(),
                 Status = post.Status,
                 CreatedAt = post.CreatedAt,
                 UpdatedAt = post.UpdatedAt,
@@ -90,13 +93,15 @@ namespace blogapicontroller.Controllers
         [HttpPost]
         public async Task<ActionResult<Post>> PostPost(PostDTO post)
         {
+            
+            
             Post postToUpdate = new Post
             {
                 PostId = post.PostId,
                 AuthorId = post.AuthorId,
                 Content = post.Content,
                 Title = post.Title,
-                Slug = post.Slug,
+                Slug = post.Title.Kebaberize(),
                 Status = post.Status,
                 CreatedAt = post.CreatedAt,
                 UpdatedAt = post.UpdatedAt,
