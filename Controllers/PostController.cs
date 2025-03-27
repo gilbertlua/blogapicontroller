@@ -31,6 +31,19 @@ namespace blogapicontroller.Controllers
         {
             return await _context.Posts.ToListAsync();
         }
+        
+        // GET: api/Post/user
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Post>>> GetPosts(int? userId)
+        {
+            var posts = await _context.Posts
+                .Where(p => p.AuthorId == userId)
+                .ToListAsync();
+            
+            if (posts.Count == 0)
+                return NotFound(new { message = "No posts found for this user." });
+            return Ok(posts);
+        }
 
         // GET: api/Post/5
         [HttpGet("{id}")]
@@ -89,7 +102,7 @@ namespace blogapicontroller.Controllers
         }
 
         // POST: api/Post
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // To protect from over posting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Post>> PostPost(PostDTO post)
         {
@@ -112,6 +125,8 @@ namespace blogapicontroller.Controllers
 
             return CreatedAtAction("GetPost", new { id = post.PostId }, post);
         }
+        
+        
 
         // DELETE: api/Post/5
         [HttpDelete("{id}")]
