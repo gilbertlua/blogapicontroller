@@ -31,7 +31,6 @@ namespace blogapicontroller.Controllers
         {
             return await _context.Posts.ToListAsync();
         }
-
         // GET: api/Post/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Post>> GetPost(int id)
