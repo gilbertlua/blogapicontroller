@@ -42,7 +42,14 @@ namespace blogapicontroller.Controllers
 
             return comment;
         }
-
+        
+        // Get Comment by post id
+        [HttpGet("/api/comment/postid/{postId}")]
+        public async Task<ActionResult<IEnumerable<Comment>>> GetComments(int postId)
+        {
+            var commentsById = await _context.Comments.Where(c => c.PostId == postId).ToListAsync();
+            return Ok(commentsById);
+        }
         // PUT: api/Comment/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

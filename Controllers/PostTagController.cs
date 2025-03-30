@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using blogapicontroller.Data;
+using blogapicontroller.DTO;
 using blogapicontroller.Models;
 
 namespace blogapicontroller.Controllers
@@ -45,14 +46,21 @@ namespace blogapicontroller.Controllers
         // PUT: api/PostTag/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPostTag(int id, PostTag postTag)
+        public async Task<IActionResult> PutPostTag(int id, PostTagDTO postTag)
         {
             if (id != postTag.PostTagId)
             {
                 return BadRequest();
             }
-
-            _context.Entry(postTag).State = EntityState.Modified;
+            
+            var postTagUpdate = new PostTag
+            {
+                PostTagId = postTag.PostTagId,
+                PostId = postTag.PostId,
+                TagId = postTag.TagId
+            };
+            
+            _context.Entry(postTagUpdate).State = EntityState.Modified;
 
             try
             {
@@ -76,11 +84,16 @@ namespace blogapicontroller.Controllers
         // POST: api/PostTag
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PostTag>> PostPostTag(PostTag postTag)
+        public async Task<ActionResult<PostTag>> PostPostTag(PostTagDTO postTag)
         {
-            _context.PostTags.Add(postTag);
+            var postTagUpdate = new PostTag
+            {
+                PostTagId = postTag.PostTagId,
+                PostId = postTag.PostId,
+                TagId = postTag.TagId
+            };
+            _context.PostTags.Add(postTagUpdate);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetPostTag", new { id = postTag.PostTagId }, postTag);
         }
 

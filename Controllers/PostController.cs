@@ -31,20 +31,6 @@ namespace blogapicontroller.Controllers
         {
             return await _context.Posts.ToListAsync();
         }
-        
-        // GET: api/Post/user
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPosts(int? userId)
-        {
-            var posts = await _context.Posts
-                .Where(p => p.AuthorId == userId)
-                .ToListAsync();
-            
-            if (posts.Count == 0)
-                return NotFound(new { message = "No posts found for this user." });
-            return Ok(posts);
-        }
-
         // GET: api/Post/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Post>> GetPost(int id)
